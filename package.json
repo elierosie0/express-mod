@@ -1,0 +1,87 @@
+{
+    "name": "express-mod",
+    "version": "1.2.0",
+    "description": "A flexible web framework for building fast API (Application programming interface) and maintainable.",
+    "scripts": {
+        "dev:example": "nodemon --exec ts-node -T ./example/index.ts",
+        "dev:example:di": "nodemon --exec ts-node -T ./example/ex.di.ts",
+        "build": "npm run clean && npx tsc --project ./tsconfig.build.json",
+        "clean": "rimraf ./dist ./.tsbuildinfo ./.eslintcache",
+        "check-types": "npx tsc --pretty --noEmit",
+        "lint": "eslint . --ext .ts --cache --fix",
+        "format": "prettier --write ./**/*.ts",
+        "check-format": "prettier --check ./**/*.ts",
+        "prepare": "husky install",
+        "test": "mocha --check-leaks -r ts-node/register ./test/**/*.test.ts",
+        "publish:npm": "npm publish --access public"
+    },
+    "keywords": [
+        "http",
+        "backend-api",
+        "server-api",
+        "restful-api",
+        "rest-api",
+        "api",
+        "web-framework",
+        "web",
+        "app",
+        "router-api"
+    ],
+    "author": "elierosie0 <elierosie0@gmail.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/elierosie0/express-mod.git"
+    },
+    "bugs": {
+        "url": "https://github.com/elierosie0/express-mod/issues"
+    },
+    "homepage": "https://github.com/elierosie0/express-mod#readme",
+    "files": [
+        "./dist",
+        "./LICENSE",
+        "./README.md"
+    ],
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "sideEffects": false,
+    "dependencies": {
+        "@types/express": "^4.17.21",
+        "express": "^4.18.2",
+        "reflect-metadata": "^0.1.13",
+        "tslib": "^2.6.2"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^18.4.3",
+        "@commitlint/config-conventional": "^18.4.3",
+        "@types/chai": "^4.3.11",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "^20.10.0",
+        "@types/supertest": "^2.0.16",
+        "@typescript-eslint/eslint-plugin": "^6.13.1",
+        "@typescript-eslint/parser": "^6.13.1",
+        "chai": "^4.3.10",
+        "eslint": "^8.54.0",
+        "eslint-plugin-prettier": "^5.0.1",
+        "husky": "^8.0.3",
+        "lint-staged": "^15.1.0",
+        "mocha": "^10.2.0",
+        "nodemon": "^3.0.1",
+        "prettier": "^3.1.0",
+        "rimraf": "^5.0.5",
+        "supertest": "^6.3.3",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.3.2",
+        "zod": "^3.22.4"
+    },
+    "lint-staged": {
+        "./**/*.ts": [
+            "prettier --write --ignore-unknown"
+        ]
+    },
+    "engines": {
+        "node": ">=20.0.0",
+        "npm": ">=10.0.0"
+    }
+}
