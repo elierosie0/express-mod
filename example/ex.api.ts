@@ -1,3 +1,5 @@
+// @ts-nocheck - remove this comment!
+
 import { Api, Get } from '../dist/index.js' // change import path to 'express-mod'
 import { ExampleService } from './ex.sev'
 
