@@ -1,6 +1,6 @@
 {
     "name": "express-mod",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "A flexible web framework for building fast API (Application programming interface) and maintainable.",
     "scripts": {
         "ts-init": "npx tsc --init",
@@ -86,6 +86,8 @@
         }
     },
     "lint-staged": {
-        "./**/*.{ts,js}": ["prettier --write --ignore-unknown"]
+        "./**/*.{ts,js}": [
+            "prettier --write --ignore-unknown"
+        ]
     }
 }
