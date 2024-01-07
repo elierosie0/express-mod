@@ -1,5 +1,0 @@
-GET http://localhost:4000/api/v1/ex/botName
-
-###
-
-GET http://localhost:4000/api/v1/ex2

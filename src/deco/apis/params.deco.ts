@@ -1,5 +1,9 @@
-import { Store } from '../../services/store.se'
-import { MetadataKeys, ParameterIndices, ApiMethodParams } from '../../utils/types'
+import { Store } from '../../services/store.service'
+import {
+    MetadataKeys,
+    ParameterIndices,
+    ApiMethodParams,
+} from '../../utils/types'
 
 /**
  * A named URL segments that are used to capture the values specified at their position in the URL factory.
@@ -10,25 +14,38 @@ import { MetadataKeys, ParameterIndices, ApiMethodParams } from '../../utils/typ
 function PARAMS_DECORATOR_FACTORY(type: ParameterIndices): Function {
     return (name?: string): ParameterDecorator => {
         return (Target, propertyKey, index) => {
-            // Here we check does api method param metadata exist or not?.
-            const paramsMetadata: ApiMethodParams[] = Store.container.has(Target.constructor.prototype, MetadataKeys.__api_method_params__, propertyKey)
-                ? // If it does exist we will get it from there.
-                  Store.container.getOwn<ApiMethodParams[]>(Target.constructor.prototype, MetadataKeys.__api_method_params__, propertyKey)
-                : // If it does not exist set it to an empty array.
+            // here we check does api method param metadata exist or not?.
+            const paramsMetadata: ApiMethodParams[] = Store.container.has(
+                Target.constructor.prototype,
+                MetadataKeys.__api_method_params__,
+                propertyKey,
+            )
+                ? // if it does exist we will get it from there.
+                  Store.container.getOwn<ApiMethodParams[]>(
+                      Target.constructor.prototype,
+                      MetadataKeys.__api_method_params__,
+                      propertyKey,
+                  )
+                : // if it does not exist set it to an empty array.
                   []
 
-            // Push each object property into the head variable.
-            // Why do we need to do this?
-            // Because sometime a class does contain many methods.
+            // push each object property into the head variable.
+            // why do we need to do this?
+            // because sometime a class has multiple methods.
             paramsMetadata.push({
                 type,
                 name,
                 index,
-                propertyKey
+                propertyKey,
             })
 
-            // Define a new metadata object and set it up in the container Store.
-            Store.container.define<ApiMethodParams[]>(Target.constructor.prototype, paramsMetadata, MetadataKeys.__api_method_params__, propertyKey)
+            // define a new metadata object and set it up in the container Store.
+            Store.container.define<ApiMethodParams[]>(
+                Target.constructor.prototype,
+                paramsMetadata,
+                MetadataKeys.__api_method_params__,
+                propertyKey,
+            )
         }
     }
 }

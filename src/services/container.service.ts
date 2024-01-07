@@ -1,5 +1,7 @@
 import { Constructable, MetadataKeys } from '../utils/types'
 
+/* The `Container` class provides methods for defining, getting, and checking metadata on target
+objects. */
 export class Container {
     /**
      * Define a unique metadata value.
@@ -9,7 +11,12 @@ export class Container {
      * @param key a key used to store and retrieve metadata.
      * @param propertyKey the property key for the target.
      */
-    public define<T = unknown>(Target: Constructable | Function | Object, value: T, key: MetadataKeys, propertyKey?: string | symbol): void {
+    public define<T = unknown>(
+        Target: Constructable | Function | Object,
+        value: T,
+        key: MetadataKeys | string,
+        propertyKey?: string | symbol,
+    ): void {
         // If propertyKey  is given.
         if (propertyKey) {
             // Define metadata with propertyKey .
@@ -28,7 +35,11 @@ export class Container {
      * @param propertyKey the property key for the target.
      * @returns the metadata value for the metadata key if found; otherwise, undefined.
      */
-    public get<T = unknown>(Target: Constructable | Function | Object, key: MetadataKeys, propertyKey?: string | symbol): T {
+    public get<T = unknown>(
+        Target: Constructable | Function | Object,
+        key: MetadataKeys | string,
+        propertyKey?: string | symbol,
+    ): T {
         // if propertyKey is given.
         if (propertyKey) {
             // Gets metadata with propertyKey.
@@ -47,7 +58,11 @@ export class Container {
      * @param propertyKey the property key for the target.
      * @returns the metadata value for the metadata key if found; otherwise, undefined.
      */
-    public getOwn<T = unknown>(Target: Constructable | Function | Object, key: MetadataKeys, propertyKey?: string | symbol): T {
+    public getOwn<T = unknown>(
+        Target: Constructable | Function | Object,
+        key: MetadataKeys | string,
+        propertyKey?: string | symbol,
+    ): T {
         // if propertyKey is given.
         if (propertyKey) {
             // Gets own metadata with propertyKey.
@@ -66,7 +81,11 @@ export class Container {
      * @param propertyKey the property key for the target.
      * @returns `true` if the metadata key was defined on the target object or its prototype chain; otherwise, `false`.
      */
-    public has(Target: Constructable | Function | Object, key: MetadataKeys, propertyKey?: string | symbol): boolean {
+    public has(
+        Target: Constructable | Function | Object,
+        key: MetadataKeys | string,
+        propertyKey?: string | symbol,
+    ): boolean {
         // If propertyKey is given.
         if (propertyKey) {
             // Check with propertyKey.

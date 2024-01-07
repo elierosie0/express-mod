@@ -1,19 +1,21 @@
 import { RequestHandler, Router as ExRouter } from 'express'
-import { InjectorToken } from '../libs/injector-token'
+import { Token } from '../libs/token'
 
 /**
  * NonSafe type is `any` type.
+ * @public
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type NonSafe = any // Any type.
+export type NonSafe = any // Any type
 
 /**
  * Generic type for class definitions.
+ * @public
  */
 export type Constructable<T = unknown> = new (...args: NonSafe[]) => T
 
 /**
  * Possible metadata key.
+ * @public
  */
 export enum MetadataKeys {
     __api__ = 'key:__api__',
@@ -25,22 +27,24 @@ export enum MetadataKeys {
     __route_middleware__ = 'key:__route_middleware__',
     __core_injectable__ = 'key:__core_injectable__',
     // emitDecoratorMetadata's generated key: design:paramtypes.
-    __paramtypes__ = 'design:paramtypes'
+    __paramtypes__ = 'design:paramtypes',
 }
 
 /**
  * Possible http method.
+ * @public
  */
 export enum HttpMethods {
     Get = 'get',
     Post = 'post',
     Put = 'put',
     Patch = 'patch',
-    Delete = 'delete'
+    Delete = 'delete',
 }
 
 /**
  * Possible parameter index.
+ * @public
  */
 export enum ParameterIndices {
     REQUEST,
@@ -51,122 +55,155 @@ export enum ParameterIndices {
     HEADERS,
     COOKIES,
     NEXT,
-    CONTEXT
+    CONTEXT,
 }
 
 /**
  * Possible path params type.
+ * @public
  */
 export type PathParams = string | RegExp | Array<string | RegExp>
 
 /**
  * Possible api type.
+ * @public
  */
 export interface Api {
     /**
      * Url path. the parents url path.
+     * @readonly
      */
     readonly url: PathParams
 }
 
 /**
  * Possible api method type.
+ * @public
  */
 export interface ApiMethod {
     /**
-     * Http method.
+     * Http method
+     * @readonly
      */
     readonly method: HttpMethods
     /**
-     * Url path.
+     * Url path
+     * @readonly
      */
     readonly url: PathParams
     /**
-     * Status code.
+     * Status code
+     * @readonly
      */
     readonly status: number
     /**
-     * Method key or name.
+     * Method key or name
+     * @readonly
      */
     readonly propertyKey: string | symbol
     /**
-     * Method value.
+     * Method value
+     * @readonly
      */
     readonly descriptor: PropertyDescriptor
 }
 
 /**
  * Possible middleware type.
+ * @public
+ *
  */
 export type Middleware = RequestHandler
 
 /**
  * Possible api method params type.
+ * @public
+ *
  */
 export interface ApiMethodParams {
     /**
-     * Parameter index type.
+     * Parameter index type
+     * @readonly
      */
     readonly type: ParameterIndices
     /**
-     * Parameter name.
+     * Parameter name
+     * @readonly
      */
     readonly name?: string
     /**
-     * Parameter index.
+     * Parameter index
+     * @readonly
      */
     readonly index: number
     /**
-     * Method key or name.
+     * Method key or name
+     * @readonly
      */
     readonly propertyKey: string | symbol | undefined
 }
 
 /**
  * Possible route type.
+ * @public
+ *
  */
 export interface Route<T = unknown> {
     /**
-     * Api handler.
+     * Api handler
+     * @readonly
      */
     readonly Apis: Constructable<T>[]
     /**
-     * Route options.
+     * Route options
+     * @readonly
      */
     readonly routeOptions: { router: ExRouter }
 }
 
 /**
  * Possible validate request type.
+ * @public
+ *
  */
-export type ValidateRequest = { body?: NonSafe; params?: NonSafe; query?: NonSafe }
+export type ValidateRequest = {
+    body?: NonSafe
+    query?: NonSafe
+    params?: NonSafe
+}
 
 /**
  * Core types wrapper.
+ * @public
  */
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace core {
     /**
      * Possible injectable types.
+     * @exports
      */
-    export type Injectable<T = unknown, S = unknown> = Constructable<T> | InjectorToken<S>
+    export type Injectable<T = unknown, S = unknown> =
+        | Constructable<T>
+        | Token<S>
     /**
      * Possible injectable id type.
+     * @exports
      */
-    export type InjectableId<S = unknown> = InjectorToken<S>
+    export type InjectableId<S = unknown> = Token<S>
+    /**
+     * Possible injectable dependency types.
+     * @exports
+     */
+    export interface Dependency<S = unknown> {
+        id: InjectableId<S>
+    }
     /**
      * Possible injector types.
+     * @exports
      */
     export interface Injector<T = unknown, S = unknown> {
         id: InjectableId<S>
         Type: Constructable<T>
         deps: Dependency<S>[]
         value?: unknown
-    }
-    /**
-     * Possible injectable dependency types.
-     */
-    export interface Dependency<S = unknown> {
-        id: InjectableId<S>
     }
 }

@@ -12,3 +12,5 @@ export * from './src'
  * The express() function is a top-level function exported by the express module.
  */
 export default express as typeof express
+// Commonjs
+export const expressFn = express as typeof express

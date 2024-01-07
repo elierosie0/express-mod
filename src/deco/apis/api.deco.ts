@@ -1,4 +1,4 @@
-import { Store } from '../../services/store.se'
+import { Store } from '../../services/store.service'
 import { MetadataKeys, Api, PathParams } from '../../utils/types'
 
 /**
@@ -10,7 +10,7 @@ import { MetadataKeys, Api, PathParams } from '../../utils/types'
  */
 export function Api(url: PathParams = '/'): ClassDecorator {
     return (Target) => {
-        // Define a new metadata object and set it up in the container Store.
+        // define a new metadata object and set it up in the container Store.
         Store.container.define<Api>(Target, { url }, MetadataKeys.__api__)
     }
 }

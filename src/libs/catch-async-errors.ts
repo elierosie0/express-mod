@@ -16,7 +16,10 @@ type OldFn = { [x: string]: Function } & Function
  * @param newFn - NewFn & { [x: string]: Function | undefined }
  * @returns A function that takes an old function and a new function and returns a new function.
  */
-const copyFnProps = (oldFn: OldFn, newFn: NewFn & { [x: string]: Function | undefined }): NonSafe => {
+const copyFnProps = (
+    oldFn: OldFn,
+    newFn: NewFn & { [x: string]: Function | undefined },
+): NonSafe => {
     Object.keys(oldFn).forEach((key) => {
         newFn[key] = oldFn[key]
     })
@@ -36,14 +39,15 @@ const wrap = (oldFn: OldFn): NonSafe => {
         const result = oldFn.apply(this, args)
         const next = (args.length === 5 ? args[2] : last(args)) || noop
 
-        if (result && result.catch) return result.catch((err: Error) => next(err))
+        if (result && result.catch)
+            return result.catch((err: Error) => next(err))
 
         return result
     }
 
     Object.defineProperty(newFn, 'length', {
         value: oldFn.length,
-        writable: false
+        writable: false,
     })
 
     return copyFnProps(oldFn, newFn as NonSafe)
@@ -57,7 +61,10 @@ const wrap = (oldFn: OldFn): NonSafe => {
 function patchRouterParam(): void {
     const originalParam: Function = Router.prototype.constructor.param
 
-    Router.prototype.constructor.param = function param(name: string, fn: OldFn) {
+    Router.prototype.constructor.param = function param(
+        name: string,
+        fn: OldFn,
+    ) {
         fn = wrap(fn)
         return originalParam.call(this, name, fn)
     }
@@ -66,13 +73,15 @@ function patchRouterParam(): void {
 /* Creating a getter and setter for the `handle` property on the `Layer` prototype. */
 Object.defineProperty(Layer.prototype, 'handle', {
     enumerable: true,
+
     get() {
         return this.__handle
     },
+
     set(fn) {
         fn = wrap(fn)
         this.__handle = fn
-    }
+    },
 })
 
 /* Patching the `param` function on the `Router` prototype to wrap the callback function in a

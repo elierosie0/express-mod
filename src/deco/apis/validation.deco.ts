@@ -1,4 +1,4 @@
-import { Store } from '../../services/store.se'
+import { Store } from '../../services/store.service'
 import { MetadataKeys, NonSafe } from '../../utils/types'
 
 /**
@@ -9,7 +9,12 @@ import { MetadataKeys, NonSafe } from '../../utils/types'
  */
 export function Validation(schema: NonSafe): MethodDecorator {
     return (Target, propertyKey) => {
-        // Define a new metadata object and set it up in the container Store.
-        Store.container.define<NonSafe>(Target.constructor.prototype, schema, MetadataKeys.__api_method_validation__, propertyKey)
+        // define a new metadata object and set it up in the container Store.
+        Store.container.define<NonSafe>(
+            Target.constructor.prototype,
+            schema,
+            MetadataKeys.__api_method_validation__,
+            propertyKey,
+        )
     }
 }

@@ -1,11 +1,11 @@
-import { Store } from '../../services/store.se'
+import { Store } from '../../services/store.service'
 
 /**
- * ...
+ * Injectable func
  */
 export function Injectable(): ClassDecorator {
     return (Target) => {
-        // Define a new metadata object.
+        // define a new metadata object.
         Store.defineInjector(Target)
     }
 }
