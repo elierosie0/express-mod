@@ -1,6 +1,6 @@
 {
     "name": "express-mod",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "A flexible web framework for building fast API (Application programming interface) and maintainable.",
     "scripts": {
         "ts-init": "npx tsc --init",
