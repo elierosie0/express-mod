@@ -9,8 +9,8 @@
         "check-types": "npx tsc --pretty --noEmit",
         "lint": "eslint . --ext .ts --cache",
         "lint:fix": "eslint . --ext .ts --cache --fix",
-        "format": "prettier --write ./**/*.ts",
         "check-format": "prettier --check ./**/*.ts",
+        "format": "prettier --write ./**/*.ts",
         "clean": "rimraf ./dist ./.tsbuildinfo ./.eslintcache",
         "test": "jest",
         "publish": "npm publish --access public"

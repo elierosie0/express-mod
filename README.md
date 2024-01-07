@@ -39,12 +39,14 @@ A flexible web framework for building fast API (Application programming interfac
     -   [Errors & Exceptions](#customize-errors-and-exceptions)
 -   [Exception](#exception)
 -   [Define injector](#define-injector)
+-   [Using with Javascript](#using-with-js)
+    -   [Start the server](#start-the-server-with-js)
 
 <a href="#example"></a>
 
 ## Example
 
-> Note: `express-mod` based on TypeScript. Using it with TypeScript projects is recommended. If you are using JavaScript, I recommend use `express` instead.
+> Attention: Using `express-mod` with TypeScript projects is recommended. If you are using JavaScript [see this](#using-with-js).
 
 <a href="#start-the-server"></a>
 
@@ -55,11 +57,13 @@ A flexible web framework for building fast API (Application programming interfac
 ```ts
 import express from 'express-mod'
 
-// Initialize express.
+// initialize express
 const app = express()
 
-// Listen for connections.
-app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
+// listen for connections
+app.listen(4000, () =>
+    console.log('Server is up! visit: http://localhost:4000'),
+)
 ```
 
 <a href="#register-route"></a>
@@ -71,16 +75,18 @@ app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000')
 ```ts
 import express from 'express-mod'
 
-// Initialize express.
+// initialize express
 const app = express()
 
-// Register route.
+// register route
 app.get('/', (_req, res) => {
     res.status(200).send('OK')
 }) // visit: http://localhost:4000 => OK
 
-// Listen for connections.
-app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
+// listen for connections
+app.listen(4000, () =>
+    console.log('Server is up! visit: http://localhost:4000'),
+)
 ```
 
 <a href="#routing-with-decorator"></a>
@@ -121,7 +127,7 @@ export class ExampleApi {
 
 ```ts
 import express, { Route } from 'express-mod'
-import { ExampleApi } from './cat.api.ts'
+import { ExampleApi } from './ex.api.ts'
 
 @Route([ExampleApi], { router: express.Router() })
 export class ExampleRoute {}
@@ -136,26 +142,27 @@ export class ExampleRoute {}
 ```ts
 import express, { Router } from 'express-mod'
 import { ExampleRoute } from './ex.ro.ts'
-import { connect } from './database' // this could be mongo, sql, etc.
 
-// Initialize express.
+// initialize express
 const app = express()
 
-// Router instance.
+// router instance
 const router = new Router({ initial: app })
 
-// Attach and register decorated route.
+// attach and register decorated route.
 router.attach('/api/v1', [ExampleRoute])
 
 async function __main__() {
-    // TODO: Connect to database.
-    await connect({ uri: 'DB_URI' })
+    // TODO: connect to database
+    // await connect({ uri: 'DB_URI' })
 
-    // Listen for connections.
-    app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
+    // listen for connections
+    app.listen(4000, () =>
+        console.log('Server is up! visit: http://localhost:4000'),
+    )
 }
 
-// Execute main.
+// execute main
 __main__()
 ```
 
@@ -256,7 +263,7 @@ export class ExampleApi {
         (req, res, next) => {
             console.log('mid mounted before route bound.')
             next()
-        }
+        },
     ])
     public helloWorld(): string {
         return 'hello world!'
@@ -275,7 +282,7 @@ import { Middleware } from 'express-mod'
     (req, res, next) => {
         console.log('mid mounted before route bound.')
         next()
-    }
+    },
 ])
 export class ExampleRoute {}
 ```
@@ -388,11 +395,13 @@ import { Inject } from 'express-mod'
 import { ExampleService } from './injectable'
 
 export class Example {
-    constructor(@Inject(ExampleService) private readonly exampleService: ExampleService) {}
+    constructor(
+        @Inject(ExampleService) private readonly exampleService: ExampleService,
+    ) {}
 
     public getName(): string {
         return exampleService.username()
-    } // Returns "Bob"
+    } // returns "Bob"
 }
 ```
 
@@ -410,7 +419,7 @@ Example
 import { Injector } from 'express-mod'
 import { Example } from './inject'
 
-// Resolve Example injector value.
+// resolve Example injector value.
 const value = Injector.get(Example)
 value.username() // Returns "Bob"
 ```
@@ -434,17 +443,17 @@ Example
 ```ts
 import { Middleware, UnauthorizedError } from 'express-mod'
 
-// Check if user is not log in.
+// check if user is not log in.
 const Authenticated = () =>
     Middleware([
         (req, res, next) => {
             if (req.isUnAuthenticated()) {
                 throw new UnauthorizedError('User unauthorized.')
             }
-        }
+        },
     ])
 
-// Example usage:
+// example usage:
 export class ExampleApi {
     @Authenticated()
     public helloWorld(): string {
@@ -467,10 +476,11 @@ Example
 ```ts
 import { METHOD_DECORATOR_FACTORY, PathParams } from 'express-mod'
 
-// Head http method.
-const Head = (url?: PathParams, status: number = 200) => METHOD_DECORATOR_FACTORY('head', url, status)
+// head http method
+const Head = (url?: PathParams, status: number = 200) =>
+    METHOD_DECORATOR_FACTORY('head', url, status)
 
-// Example usage:
+// example usage:
 export class ExampleApi {
     @Head()
     public helloWorld(): string {
@@ -502,7 +512,7 @@ export class BadRequestError extends CustomError {
     }
 }
 
-// Example usage:
+// example usage:
 throw new BadRequestError('Any message.')
 ```
 
@@ -515,13 +525,13 @@ The `Router` is a top-level class used to attach and register decorated route.
 ```ts
 import express, { Router } from 'express-mod'
 
-// Initialize express.
+// initialize express
 const app = express()
 
-// Router constance.
+// router constance
 const router = new Router({ initial: app })
 
-// Attach and register decorated route.
+// attach and register decorated route.
 router.attach('/', [route, ...])
 ```
 
@@ -556,8 +566,39 @@ import { defineInjector } from 'express-mod'
 
 export class Example {}
 
-// Define injector.
+// define injector
 defineInjector(Example)
 ```
+
+<a href="#using-with-js"></a>
+
+## Using with Javascript
+
+> Attention: Using `express-mod` with Javascript will gain less benefits. But you can still use it or consider using `express` instead.
+
+<a href="#start-the-server-with-js"></a>
+
+#### Start the server
+
+> To start the server using `Javascript` (CommonJs) you have to make some changes.
+
+`./server.js`
+
+```ts
+// CommonJs
+const { expressFn } = require('express-mod')
+
+// initialize express
+const app = expressFn()
+
+// listen for connections
+app.listen(4000, () =>
+    console.log('Server is up! visit: http://localhost:4000'),
+)
+```
+
+#### Benefit
+
+-   [Exception](#exception)
 
 **express-mod** build everything Api (Application programming interface) lighter, easier and maintainable.
