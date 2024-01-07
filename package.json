@@ -5,7 +5,7 @@
     "scripts": {
         "ts-init": "npx tsc --init",
         "dev": "nodemon --watch ./example --exec ts-node -T ./example/index.ts",
-        "build": "npm run clean  && npx tsc",
+        "build": "npm run clean  && npx tsc -p ./tsconfig.build.json",
         "check-types": "npx tsc --pretty --noEmit",
         "lint": "eslint . --ext .ts --cache",
         "lint:fix": "eslint . --ext .ts --cache --fix",
