@@ -1,16 +1,18 @@
 # About
 
-A flexible web framework for building fast API (Application programming interface) and maintainable.
+An open source web framework for building fast API (Application programming interface) is flexible and maintainable.
 
-> `express-mod` based on the [express](https://expressjs.com) web framework.
+> `express-mod` is [express](https://expressjs.com) but something else.
 
-## Default Features ✨ What so special about express-mod?
-
+## Top Features ✨
+-   Clean architecture ✔
+-   `OOP` and `MVC` based routing or functionality are also supported ✔
+-   Route validation ✔
 -   Error handler such as 404 exception and global exception ✔
 -   Catch async error on all routes ✔
--   `OOP` and `MVC` based routing or functionality are also supported ✔
 -   Typescript support out of the box ✔
--   Route validation ✔
+
+All these features are included by default, they can save you the time of setting them up from scratch.
 
 👉 Note: some of these features are optional. You can either use or not to use.
 
@@ -52,7 +54,7 @@ A flexible web framework for building fast API (Application programming interfac
 
 #### Start the server
 
-`./server.ts`
+`./index.ts`
 
 ```ts
 import express from 'express-mod'
@@ -70,7 +72,7 @@ app.listen(4000, () =>
 
 #### Register route
 
-`./server.ts`
+`./index.ts`
 
 ```ts
 import express from 'express-mod'
@@ -93,7 +95,7 @@ app.listen(4000, () =>
 
 #### Routing with decorator
 
-`./ex.sev.ts`
+`./sevice.ts`
 
 ```ts
 import { Injectable } from 'express-mod'
@@ -106,11 +108,11 @@ export class ExampleService {
 }
 ```
 
-`./ex.api.ts`
+`./api.ts`
 
 ```ts
 import { Api, Get } from 'express-mod'
-import { ExampleService } from './ex.sev.ts'
+import { ExampleService } from './sevice'
 
 @Api()
 export class ExampleApi {
@@ -123,11 +125,11 @@ export class ExampleApi {
 }
 ```
 
-`./ex.rou.ts`
+`./route.ts`
 
 ```ts
 import express, { Route } from 'express-mod'
-import { ExampleApi } from './ex.api.ts'
+import { ExampleApi } from './api'
 
 @Route([ExampleApi], { router: express.Router() })
 export class ExampleRoute {}
@@ -137,11 +139,11 @@ export class ExampleRoute {}
 
 #### Attach and register decorated route
 
-`./server.ts`
+`./index.ts`
 
 ```ts
 import express, { Router } from 'express-mod'
-import { ExampleRoute } from './ex.ro.ts'
+import { ExampleRoute } from './rouue'
 
 // initialize express
 const app = express()
@@ -236,7 +238,9 @@ Example
 import { Get } from 'express-mod'
 
 export class ExampleApi {
-    @Get()
+    @Get() // => "/"
+    // or - @Get("/", 200) => "/"
+    // or - @Get(200) => "/"
     public helloWorld(): string {
         return 'hello world!'
     }
@@ -438,7 +442,7 @@ Most come with `middleware`. It has to be flexible. Sure, we got it!
 
 Example
 
-`./api.middleware.ts`
+`./mids.ts`
 
 ```ts
 import { Middleware, UnauthorizedError } from 'express-mod'
@@ -582,11 +586,12 @@ defineInjector(Example)
 
 > To start the server using `Javascript` (CommonJs) you have to make some changes.
 
-`./server.js`
+`./index.js`
 
 ```ts
 // CommonJs
-const { expressFn } = require('express-mod')
+const { expressFn } = require('express-mod') ✅
+// const express = require('express-mod') throw error not working❌
 
 // initialize express
 const app = expressFn()
