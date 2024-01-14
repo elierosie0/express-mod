@@ -2,7 +2,7 @@
 
 An open source web framework for building fast API (Application programming interface) is flexible and maintainable.
 
-> `express-mod` is [express](https://expressjs.com) but something else.
+> `express-mod` is [express](https://expressjs.com), but clean and fast architecture for both development and production.
 
 ## Top Features ✨
 -   Clean architecture ✔
@@ -590,8 +590,8 @@ defineInjector(Example)
 
 ```ts
 // CommonJs
-const { expressFn } = require('express-mod') ✅
-// const express = require('express-mod') throw error not working❌
+const { expressFn } = require('express-mod') // this would work! ✅
+// const express = require('express-mod') this will not work!❌
 
 // initialize express
 const app = expressFn()
