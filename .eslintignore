@@ -6,6 +6,9 @@
 # production
 /dist
 
+# debug
+npm-debug.log*
+
 # typescript
 *.tsbuildinfo
 *.eslintcache

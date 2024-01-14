@@ -5,11 +5,14 @@ An open source web framework for building fast API (Application programming inte
 > `express-mod` is [express](https://expressjs.com), but clean and fast architecture for both development and production.
 
 ## Top Features ✨
+
 -   Clean architecture ✔
 -   `OOP` and `MVC` based routing or functionality are also supported ✔
 -   Route validation ✔
 -   Error handler such as 404 exception and global exception ✔
+    -   Server crashes such as `bugs`, `errors` are no longer a problem.
 -   Catch async error on all routes ✔
+    -   No more trycatch blocks when dealing with async functions.
 -   Typescript support out of the box ✔
 
 All these features are included by default, they can save you the time of setting them up from scratch.
@@ -401,6 +404,8 @@ import { ExampleService } from './injectable'
 export class Example {
     constructor(
         @Inject(ExampleService) private readonly exampleService: ExampleService,
+        // short version:
+        private readonly exampleService: ExampleService, // this will auto inject without using the @Inject() decorator.
     ) {}
 
     public getName(): string {

@@ -264,6 +264,7 @@ export class Router {
 
         // global handler
         this._app.use(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             (err: Error, _req: Request, res: Response, _next: NextFunction) => {
                 // response logic
                 if (err instanceof CustomError) {

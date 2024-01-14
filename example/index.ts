@@ -1,6 +1,7 @@
 import express, { Router } from '../dist/index.js' // change import path to 'express-mod'
 
-import { ExampleRoute } from './ex.rou'
+import { ExampleBaseRoute } from './apis/base/route'
+import { ExampleValidationRoute } from './apis/validation/route'
 
 // initialize express
 const app = express()
@@ -9,7 +10,7 @@ const app = express()
 const router = new Router({ initial: app })
 
 // attach and register decorated route.
-router.attach('/api/v1', [ExampleRoute])
+router.attach('/api/v1', [ExampleBaseRoute, ExampleValidationRoute])
 
 async function __main__() {
     // listen for connections
