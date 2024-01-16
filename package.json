@@ -1,7 +1,7 @@
 {
     "name": "express-mod",
     "version": "1.2.2",
-    "description": "An open source web framework for building fast API (Application programming interface) is flexible and maintainable.",
+    "description": "express-mod is an open source library for building API (Application programming interface)",
     "scripts": {
         "ts-init": "npx tsc --init",
         "dev": "nodemon --watch ./example --exec ts-node -T ./example/index.ts",
@@ -17,15 +17,15 @@
     },
     "keywords": [
         "http",
-        "backend-api",
-        "server-api",
-        "restful-api",
-        "rest-api",
-        "api",
-        "web-framework",
         "web",
+        "rest",
+        "restful",
+        "router",
+        "api",
         "app",
-        "router-api"
+        "backend",
+        "server",
+        "library"
     ],
     "author": "elierosie0 <elierosie0@gmail.com>",
     "license": "MIT",
