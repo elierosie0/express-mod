@@ -1,12 +1,11 @@
 # About
 
-An open source web framework for building fast API (Application programming interface) is flexible and maintainable.
+**express-mod** is an open source library for building API (Application programming interface)
 
-> `express-mod` is [express](https://expressjs.com), but clean and fast architecture for both development and production.
+> `express-mod` is based on the [express](https://expressjs.com) framework.
 
-## Top Features ✨
+## Features ✨
 
--   Clean architecture ✔
 -   `OOP` and `MVC` based routing or functionality are also supported ✔
 -   Route validation ✔
 -   Error handler such as 404 exception and global exception ✔
@@ -18,6 +17,14 @@ An open source web framework for building fast API (Application programming inte
 All these features are included by default, they can save you the time of setting them up from scratch.
 
 👉 Note: some of these features are optional. You can either use or not to use.
+
+## Do's and Don'ts of express-mod
+
+-    `express-mod` aims to make Express more manageable using its decorator APIs
+-    `express-mod` does not modify any functions of [express](https://expressjs.com)
+-    `express-mod` aims to be fast, lighter, flexible and maintainable
+-    Using `express-mod` with TypeScript is recommended
+-    Using `express-mod` with JavaScript will gain less benifits or consider using `express` instead
 
 ## Table of contents
 
