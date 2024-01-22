@@ -1,18 +1,18 @@
 // @ts-nocheck - remove this comment!
 
-import { Injectable } from '../../../dist/index.js' // change import path to 'express-mod'
+import { Injectable } from '../../../index' // change import path to 'express-mod'
 
 /**
- * Possible example base api implement type.
- * @private
+ * Possible example base implement type.
+ * @public
  */
-interface ExampleBaseApiIml {
+export interface ExampleBaseImpl {
     helloWorldTxt: () => string
 }
 
 @Injectable()
-export class ExampleBaseService implements ExampleBaseApiIml {
-    public helloWorldTxt(): string {
+export class ExampleBaseService implements ExampleBaseImpl {
+    public helloWorld(): string {
         return 'Hello world!'
     }
 }
