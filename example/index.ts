@@ -1,4 +1,4 @@
-import express, { Router } from '../dist/index.js' // change import path to 'express-mod'
+import express, { Router } from '../index' // change import path to 'express-mod'
 
 import { ExampleBaseRoute } from './apis/base/route'
 import { ExampleValidationRoute } from './apis/validation/route'
