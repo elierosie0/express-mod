@@ -44,12 +44,12 @@ function MIDDLEWARE_DECORATOR_FACTORY(
         if (typeof Target === 'function') {
             // here we check does route middleware metadata exist or not?.
             const routeMidsMetadata: Middleware[] = Store.container.has(
-                Target,
+                Target.constructor.prototype,
                 MetadataKeys.__route_middleware__,
             )
                 ? // if it does exist we will get it from there.
                   Store.container.getOwn<Middleware[]>(
-                      Target,
+                      Target.constructor.prototype,
                       MetadataKeys.__route_middleware__,
                   )
                 : // if it does not exist set it to an empty array.
@@ -57,7 +57,7 @@ function MIDDLEWARE_DECORATOR_FACTORY(
 
             // define a new metadata object and set it up in the container Store.
             Store.container.define<Middleware[]>(
-                Target,
+                Target.constructor.prototype,
                 mids.concat(routeMidsMetadata),
                 MetadataKeys.__route_middleware__,
             )
