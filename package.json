@@ -1,6 +1,6 @@
 {
     "name": "express-mod",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "express-mod is an open source library for building API (Application programming interface)",
     "scripts": {
         "ts-init": "npx tsc --init",
