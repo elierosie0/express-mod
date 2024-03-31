@@ -61,11 +61,11 @@ export class Router {
      * Possible signatures:
      * * `router.attach(prefix, [route, ...]) => void`
      */
-    public attach<T = unknown>(prefix: PathParams, Handlers: T[]): void {
+    public attach(prefix: PathParams, Handlers: Function[]): void {
         const Routes = this.removeDuplicatedArr(Handlers) as Constructable[]
 
         Routes.forEach((Route) => {
-            const routeMetadata: Route<T> = Store.container.get(
+            const routeMetadata: Route<Function> = Store.container.get(
                 Route,
                 MetadataKeys.__route__,
             ) // parents

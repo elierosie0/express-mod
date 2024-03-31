@@ -8,7 +8,7 @@ import {
     Validation,
     Inject,
 } from '../../../index' // change import path to 'express-mod'
-import z, { AnyZodObject } from 'zod' // 👉: install zod
+import z from 'zod' // 👉: install zod
 import { type ExampleValidationImpl, ExampleValidationService } from './service'
 
 @Api('/validation')
@@ -19,7 +19,7 @@ export class ExampleValidationApi implements ExampleValidationImpl {
     ) {}
 
     @Get()
-    @Validation<AnyZodObject>(
+    @Validation(
         z.object<ValidateRequest>({
             query: z.object({ name: z.string().max(5) }),
         }),

@@ -164,12 +164,11 @@ export interface Route<T = unknown> {
 /**
  * Possible validate request type.
  * @public
- *
  */
-export type ValidateRequest = {
-    body?: NonSafe
-    query?: NonSafe
-    params?: NonSafe
+export type ValidateRequest<B = NonSafe, Q = NonSafe, P = NonSafe> = {
+    body?: B
+    query?: Q
+    params?: P
 }
 
 /**

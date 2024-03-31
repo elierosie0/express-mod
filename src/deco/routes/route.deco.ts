@@ -10,14 +10,14 @@ import { Constructable, MetadataKeys, Route } from '../../utils/types'
  * @returns
  */
 export function Route<T = unknown>(
-    Apis: T[],
+    Apis: Constructable<T>[],
     routeOptions: { router: ExRouter },
 ): ClassDecorator {
     return (Target) => {
         // define a new metadata object and set it up in the container Store.
         Store.container.define<Route<T>>(
             Target,
-            { Apis: Apis as Constructable<T>[], routeOptions },
+            { Apis: Apis, routeOptions },
             MetadataKeys.__route__,
         )
     }
