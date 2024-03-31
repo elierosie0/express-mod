@@ -6,5 +6,5 @@
  * @throws
  */
 export function ThrowError(subject: string, message: string) {
-    return Error(`${subject}: ${message}`)
+  return Error(`${subject}: ${message}`);
 }

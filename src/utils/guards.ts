@@ -1,6 +1,6 @@
-import { Readable } from 'stream'
-import { NonSafe } from './types'
-import { ServerResponse } from 'http'
+import { Readable } from "stream";
+import { NonSafe } from "./types";
+import { ServerResponse } from "http";
 
 /**
  * The function `isReadableStream` checks if a given object is an instance of the `Readable` class.
@@ -8,7 +8,7 @@ import { ServerResponse } from 'http'
  * @returns a boolean value.
  */
 export function isReadableStream(result: NonSafe): result is Readable {
-    return result instanceof Readable
+  return result instanceof Readable;
 }
 
 /**
@@ -19,7 +19,7 @@ export function isReadableStream(result: NonSafe): result is Readable {
  * class, and false otherwise.
  */
 export function isPromise<T = unknown>(result: NonSafe): result is Promise<T> {
-    return result instanceof Promise
+  return result instanceof Promise;
 }
 
 /**
@@ -29,5 +29,5 @@ export function isPromise<T = unknown>(result: NonSafe): result is Promise<T> {
  * @returns a boolean value.
  */
 export function isServerResponse(result: NonSafe): result is ServerResponse {
-    return result instanceof ServerResponse
+  return result instanceof ServerResponse;
 }
