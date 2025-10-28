@@ -1,5 +1,5 @@
 import { Store } from '../../services/store.service'
-import { MetadataKeys, Middleware, NonSafe } from '../../utils/types'
+import { MetadataKeys, Middleware } from '../../utils/types'
 
 /**
  * A function which is called before the route handler factory.
@@ -20,33 +20,21 @@ function MIDDLEWARE_DECORATOR_FACTORY(mids: Middleware[], key: MetadataKeys): Fu
                   []
 
             // define a new metadata object and set it up in the container Store.
-            Store.container.define<Middleware[]>(
-                Target.constructor.prototype,
-                mids.concat(apiMidsMetadata),
-                key,
-                propertyKey
-            )
+            Store.container.define<Middleware[]>(Target.constructor.prototype, mids.concat(apiMidsMetadata), key, propertyKey)
         }
 
         // if typeof Target is a function.
         // NOTE: isolated
         if (typeof Target === 'function') {
             // here we check does route middleware metadata exist or not?.
-            const routeMidsMetadata: Middleware[] = Store.container.has(
-                Target.constructor.prototype,
-                MetadataKeys.__route_middleware__
-            )
+            const routeMidsMetadata: Middleware[] = Store.container.has(Target.constructor.prototype, MetadataKeys.__route_middleware__)
                 ? // if it does exist we will get it from there.
                   Store.container.getOwn<Middleware[]>(Target.constructor.prototype, MetadataKeys.__route_middleware__)
                 : // if it does not exist set it to an empty array.
                   []
 
             // define a new metadata object and set it up in the container Store.
-            Store.container.define<Middleware[]>(
-                Target.constructor.prototype,
-                mids.concat(routeMidsMetadata),
-                MetadataKeys.__route_middleware__
-            )
+            Store.container.define<Middleware[]>(Target.constructor.prototype, mids.concat(routeMidsMetadata), MetadataKeys.__route_middleware__)
         }
     }
 }

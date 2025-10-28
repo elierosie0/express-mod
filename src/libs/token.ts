@@ -3,5 +3,5 @@
  * @example [new Token<string>('ANY_STRING_TOKEN')]
  */
 export class Token<T = unknown> {
-  constructor(public name: T) {}
+    constructor(public name: T) {}
 }

@@ -10,11 +10,6 @@ import { MetadataKeys } from '../../utils/types'
 export function Validation<T = unknown>(schema: T): MethodDecorator {
     return (Target, propertyKey) => {
         // define a new metadata object and set it up in the container Store.
-        Store.container.define<T>(
-            Target.constructor.prototype,
-            schema,
-            MetadataKeys.__api_method_validation__,
-            propertyKey
-        )
+        Store.container.define<T>(Target.constructor.prototype, schema, MetadataKeys.__api_method_validation__, propertyKey)
     }
 }

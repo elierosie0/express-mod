@@ -20,11 +20,11 @@ All these features are included by default, they can save you the time of settin
 
 ## Do's and Don'ts of express-mod
 
--    `express-mod` aims to make Express more manageable using its decorator APIs
--    `express-mod` does not modify any functions of [express](https://expressjs.com)
--    `express-mod` aims to be fast, lighter, flexible and maintainable
--    Using `express-mod` with TypeScript is recommended
--    Using `express-mod` with JavaScript will gain less benifits or consider using `express` instead
+-   `express-mod` aims to make Express more manageable using its decorator APIs
+-   `express-mod` does not modify any functions of [express](https://expressjs.com)
+-   `express-mod` aims to be fast, lighter, flexible and maintainable
+-   Using `express-mod` with TypeScript is recommended
+-   Using `express-mod` with JavaScript will gain less benifits or consider using `express` instead
 
 ## Table of contents
 
@@ -73,9 +73,7 @@ import express from 'express-mod'
 const app = express()
 
 // listen for connections
-app.listen(4000, () =>
-    console.log('Server is up! visit: http://localhost:4000'),
-)
+app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
 ```
 
 <a href="#register-route"></a>
@@ -96,9 +94,7 @@ app.get('/', (_req, res) => {
 }) // visit: http://localhost:4000 => OK
 
 // listen for connections
-app.listen(4000, () =>
-    console.log('Server is up! visit: http://localhost:4000'),
-)
+app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
 ```
 
 <a href="#routing-with-decorator"></a>
@@ -169,9 +165,7 @@ async function __main__() {
     // await connect({ uri: 'DB_URI' })
 
     // listen for connections
-    app.listen(4000, () =>
-        console.log('Server is up! visit: http://localhost:4000'),
-    )
+    app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
 }
 
 // execute main
@@ -412,7 +406,7 @@ export class Example {
     constructor(
         @Inject(ExampleService) private readonly exampleService: ExampleService,
         // short version:
-        private readonly exampleService: ExampleService, // this will auto inject without using the @Inject() decorator.
+        private readonly exampleService: ExampleService // this will auto inject without using the @Inject() decorator.
     ) {}
 
     public getName(): string {
@@ -493,8 +487,7 @@ Example
 import { METHOD_DECORATOR_FACTORY, PathParams } from 'express-mod'
 
 // head http method
-const Head = (url?: PathParams, status: number = 200) =>
-    METHOD_DECORATOR_FACTORY('head', url, status)
+const Head = (url?: PathParams, status: number = 200) => METHOD_DECORATOR_FACTORY('head', url, status)
 
 // example usage:
 export class ExampleApi {
@@ -609,9 +602,7 @@ const { expressFn } = require('express-mod') // this would work! ✅
 const app = expressFn()
 
 // listen for connections
-app.listen(4000, () =>
-    console.log('Server is up! visit: http://localhost:4000'),
-)
+app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
 ```
 
 #### Benefit

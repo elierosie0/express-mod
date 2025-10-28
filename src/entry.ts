@@ -1,16 +1,5 @@
 import { Store } from './services/store.service'
-import {
-    Constructable,
-    MetadataKeys,
-    Middleware,
-    NonSafe,
-    Route,
-    Api,
-    ApiMethod,
-    ApiMethodParams,
-    PathParams,
-    core,
-} from './utils/types'
+import { Constructable, MetadataKeys, Middleware, NonSafe, Route, Api, ApiMethod, ApiMethodParams, PathParams, core } from './utils/types'
 import { Router as ExRouter, NextFunction, Request, Response, Express, RequestHandler } from 'express'
 import { extractParams } from './libs/extract-params'
 import { isPromise, isReadableStream, isServerResponse } from './utils/guards'
@@ -83,17 +72,9 @@ export class Router {
      * @param router express.Router()
      * @param _getInstance get instance value.
      */
-    private routerHandler(
-        prefix: PathParams,
-        Api: Constructable,
-        routeMids: Middleware[],
-        router: ExRouter,
-        _getInstance: (api: Constructable) => Constructable
-    ): void {
+    private routerHandler(prefix: PathParams, Api: Constructable, routeMids: Middleware[], router: ExRouter, _getInstance: (api: Constructable) => Constructable): void {
         const apiRouteInstance: Constructable = _getInstance(Api)
-        const apiRouteMethodNames: string[] = Object.getOwnPropertyNames(Object.getPrototypeOf(new Api())).filter(
-            (p) => p !== 'constructor'
-        )
+        const apiRouteMethodNames: string[] = Object.getOwnPropertyNames(Object.getPrototypeOf(new Api())).filter((p) => p !== 'constructor')
 
         // metadata constance.
         const apiMetadata: Api | undefined = Store.container.get(Api, MetadataKeys.__api__) // parents
@@ -106,32 +87,15 @@ export class Router {
         const apiUrlPath: PathParams = this.removeTrailingSlash(apiMetadata.url)
 
         apiRouteMethodNames.forEach((name) => {
-            const apiMethodsMetadata: ApiMethod[] | undefined = Store.container.getOwn(
-                Api.prototype,
-                MetadataKeys.__api_method__,
-                name
-            ) // a child of apiMetadata.
+            const apiMethodsMetadata: ApiMethod[] | undefined = Store.container.getOwn(Api.prototype, MetadataKeys.__api_method__, name) // a child of apiMetadata.
 
             // throw
-            if (!apiMethodsMetadata)
-                throw ThrowError('ApiMethodError', 'No api method found. use `@Get()` or any http methods instead.')
+            if (!apiMethodsMetadata) throw ThrowError('ApiMethodError', 'No api method found. use `@Get()` or any http methods instead.')
 
             apiMethodsMetadata.forEach((method) => {
-                const apiMethodParamsMetadata: ApiMethodParams[] = Store.container.getOwn(
-                    Api.prototype,
-                    MetadataKeys.__api_method_params__,
-                    method.propertyKey
-                ) // a child of apiMetadata.
-                const apiMethodMidsMetadata: Middleware[] = Store.container.getOwn(
-                    Api.prototype,
-                    MetadataKeys.__api_method_middleware__,
-                    method.propertyKey
-                ) // a child of apiMetadata.
-                const apiMethodValidationMetadata: NonSafe = Store.container.getOwn(
-                    Api.prototype,
-                    MetadataKeys.__api_method_validation__,
-                    method.propertyKey
-                ) // a child of apiMetadata.
+                const apiMethodParamsMetadata: ApiMethodParams[] = Store.container.getOwn(Api.prototype, MetadataKeys.__api_method_params__, method.propertyKey) // a child of apiMetadata.
+                const apiMethodMidsMetadata: Middleware[] = Store.container.getOwn(Api.prototype, MetadataKeys.__api_method_middleware__, method.propertyKey) // a child of apiMetadata.
+                const apiMethodValidationMetadata: NonSafe = Store.container.getOwn(Api.prototype, MetadataKeys.__api_method_validation__, method.propertyKey) // a child of apiMetadata.
 
                 // url path logic.
                 const methodUrlPath: PathParams = this.removeTrailingSlash(method.url)
@@ -222,7 +186,7 @@ export class Router {
                     res.status(500).send({
                         status: 500,
                         error: 'INTERNAL_SERVER_ERROR',
-                        message: 'Something bad just happened!',
+                        message: 'Something went wrong, please try again.',
                     })
                 }
             }
@@ -250,9 +214,7 @@ export class Router {
                     res.status(422).send({
                         status: 422,
                         error: 'UNPROCESSABLE_ENTITY',
-                        message:
-                            `${(err as NonSafe)?.issues?.at(0)?.path.at(1)}: ${(err as NonSafe)?.issues?.at(0)
-                                ?.message}` || 'Validation error.',
+                        message: `${(err as NonSafe)?.issues?.at(0)?.path.at(1)}: ${(err as NonSafe)?.issues?.at(0)?.message}` || 'Validation error.',
                     })
                 } else {
                     res.status(422).send({
@@ -319,10 +281,7 @@ export class Injector {
         const injector: core.Injector = Store.findInjector(Target)
 
         // throw
-        if (!injector)
-            throw new Error(
-                'GetInjectorError: You are missing something or doing something incorrectly. Use @Injectable or @Inject instead.'
-            )
+        if (!injector) throw new Error('GetInjectorError: You are missing something or doing something incorrectly. Use @Injectable or @Inject instead.')
 
         return this.resolveInjectorValue<T>(injector)
     }
