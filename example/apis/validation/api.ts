@@ -1,15 +1,12 @@
 // @ts-nocheck - remove this comment!
 
-import { Api, Get, Query, ValidateRequest, Validation, Inject } from '../../../index' // change import path to 'express-mod'
+import { Api, Get, Query, type ValidateRequest, Validation } from '../../../index' // change import path to 'express-mod'
 import z from 'zod' // 👉: install zod
-import { type ExampleValidationImpl, ExampleValidationService } from './service'
+import { ExampleValidationService } from './service'
 
 @Api('/validation')
-export class ExampleValidationApi implements ExampleValidationImpl {
-    constructor(
-        @Inject(ExampleValidationService)
-        private readonly exampleValidationService: ExampleValidationService
-    ) {}
+export class ExampleValidationApi {
+    constructor(private readonly exampleValidationService: ExampleValidationService) {}
 
     @Get()
     @Validation(

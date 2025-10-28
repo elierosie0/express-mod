@@ -6,10 +6,10 @@
 
 ## Features ✨
 
--   `OOP` and `MVC` based routing or functionality are also supported ✔
+-   `OOP` and `MVC` based routing ✔
 -   Route validation ✔
--   Error handler such as 404 exception and global exception ✔
-    -   Server crashes such as `bugs`, `errors` are no longer a problem.
+-   Error handling and global exception ✔
+    -   Intercepting server and API crashes.
 -   Catch async error on all routes ✔
     -   No more trycatch blocks when dealing with async functions.
 -   Typescript support out of the box ✔
@@ -18,7 +18,7 @@ All these features are included by default, they can save you the time of settin
 
 👉 Note: some of these features are optional. You can either use or not to use.
 
-## Do's and Don'ts of express-mod
+## express-mod is a production ready and it's lighter than [Express](https://expressjs.com) itself
 
 -   `express-mod` aims to make Express more manageable using its decorator APIs
 -   `express-mod` does not modify any functions of [express](https://expressjs.com)
@@ -29,13 +29,11 @@ All these features are included by default, they can save you the time of settin
 ## Table of contents
 
 -   [Example](#example)
-    -   [Start the server](#start-the-server)
-    -   [Register route](#register-route)
     -   [Routing with decorator](#routing-with-decorator)
     -   [Attach and register decorated route](#attach-and-register-decorated-route)
 -   [Installation](#installation)
 -   [Apis](#api)
-    -   [@Api](#api)
+    -   [@Apis](#api)
     -   [@Method](#method)
     -   [@Middleware](#middleware)
     -   [@Params](#params)
@@ -52,50 +50,11 @@ All these features are included by default, they can save you the time of settin
 -   [Exception](#exception)
 -   [Define injector](#define-injector)
 -   [Using with Javascript](#using-with-js)
-    -   [Start the server](#start-the-server-with-js)
-
-<a href="#example"></a>
+-   [Start the server](#start-the-server-with-js)
 
 ## Example
 
 > Attention: Using `express-mod` with TypeScript projects is recommended. If you are using JavaScript [see this](#using-with-js).
-
-<a href="#start-the-server"></a>
-
-#### Start the server
-
-`./index.ts`
-
-```ts
-import express from 'express-mod'
-
-// initialize express
-const app = express()
-
-// listen for connections
-app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
-```
-
-<a href="#register-route"></a>
-
-#### Register route
-
-`./index.ts`
-
-```ts
-import express from 'express-mod'
-
-// initialize express
-const app = express()
-
-// register route
-app.get('/', (_req, res) => {
-    res.status(200).send('OK')
-}) // visit: http://localhost:4000 => OK
-
-// listen for connections
-app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
-```
 
 <a href="#routing-with-decorator"></a>
 
@@ -149,10 +108,14 @@ export class ExampleRoute {}
 
 ```ts
 import express, { Router } from 'express-mod'
-import { ExampleRoute } from './rouue'
+import http from 'node:http'
+import { ExampleRoute } from './route'
 
 // initialize express
 const app = express()
+
+// create http server
+const server = http.createServer(app)
 
 // router instance
 const router = new Router({ initial: app })
@@ -165,7 +128,7 @@ async function __main__() {
     // await connect({ uri: 'DB_URI' })
 
     // listen for connections
-    app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
+    server.listen(4000, '0.0.0.0', () => console.info(`⚡️ Server is up in ${process.env.NODE_ENV} mode. visit: http://localhost:${process.env.PORT}`))
 }
 
 // execute main
@@ -183,8 +146,8 @@ __main__()
 npm i express-mod
 
 # installing typescript
-1. npm i -D typescript - in this case I'm using npm.
-2. npx tsc --init - to create tsconfig.json file.
+1. npm i -D typescript
+2. npx tsc --init - to create tsconfig.json file
 ```
 
 As we all know, the library uses `@decorator` without enabling some additional features. Typescript will complain. You need to enable these additional features of Typescript. In the file
@@ -197,7 +160,7 @@ As we all know, the library uses `@decorator` without enabling some additional f
 }
 ```
 
-That's it. well done! see [example](#example)
+That's it. well done! see more [example](https://github.com/elierosie0/express-mod/tree/main/example)
 
 <a href="#apis"></a>
 
@@ -209,7 +172,7 @@ We provide all the Apis that you will need to create a flexible and maintainable
 
 ### @Api
 
-A class defined with methods for handling one or more requests.
+A class-level defined with methods for handling one or more requests.
 
 -   @param `url` url path.
 
@@ -255,13 +218,13 @@ export class ExampleApi {
 
 ### @Middleware
 
-A function which is called before the route handler.
+A function which is called before the route handler. there are 2 types of middleware `Method-level` and `API-level`
 
 -   @param `mids` execute any code.
 
 Example
 
-method middleware
+`Method-level`
 
 ```ts
 import { Middleware } from 'express-mod'
@@ -269,7 +232,7 @@ import { Middleware } from 'express-mod'
 export class ExampleApi {
     @Middleware([
         (req, res, next) => {
-            console.log('mid mounted before route bound.')
+            console.log('mid mounted before route bounds.')
             next()
         },
     ])
@@ -279,16 +242,14 @@ export class ExampleApi {
 }
 ```
 
-Example
-
-route middleware
+`API-level`
 
 ```ts
 import { Middleware } from 'express-mod'
 
 @Middleware([
     (req, res, next) => {
-        console.log('mid mounted before route bound.')
+        console.log('mid mounted before all routes bound.')
         next()
     },
 ])
@@ -301,7 +262,7 @@ export class ExampleRoute {}
 
 A named URL segments that are used to capture the values specified at their position in the URL.
 
--   @param `name` request type.
+-   @param `name` string name.
 
 Possible params
 
@@ -315,7 +276,7 @@ import { Req, Request, Body } from 'express-mod'
 export class ExampleApi {
     public helloWorld(@Req() req: Request, @Body() body: object): string {
         // `req.body` regular use.
-        // instead of `req.body` use `@Body()` param => req.body
+        // instead of `req.body` use `@Body()`
         return 'hello world!'
     }
 }
@@ -331,7 +292,7 @@ Validation middleware. A function which is called before the route handler.
 
 Supported library: `zod`
 
-> Note: With some libraries besides `zod` can also be integrated with routing validation, but you just have to set it up yourself. Our developers are working on it to put everything convenient.
+> Note: For other libraries beside `zod` can also be integrated with `express-mod`, but you just have to set it up yourself.
 
 Example
 
@@ -339,10 +300,10 @@ with `zod`
 
 ```ts
 import { ValidateRequest, Validation } from 'express-mod'
-import { object, string } from 'zod'
+import z from 'zod'
 
 export class ExampleApi {
-    @Validation(object<ValidateRequest>({ body: object({ name: string() }) }))
+    @Validation(z.object<ValidateRequest>({ body: z.object({ name: z.string().max(50) }) }))
     public helloWorld(): string {
         return 'hello world!'
     }
@@ -353,7 +314,7 @@ export class ExampleApi {
 
 ### @Route
 
-No description provided.
+A crucial function use to attach api handlers for the next stage.
 
 -   @param `Apis` api handlers.
 -   @param `routeOptions` route options.
@@ -362,8 +323,9 @@ Example
 
 ```ts
 import express, { Route } from 'express-mod'
+import ExampleApi from './api'
 
-@Route([], { router: express.Router() })
+@Route([ExampleApi, ...], { router: express.Router() })
 export class ExampleRoute {}
 ```
 
@@ -375,7 +337,7 @@ The `@Injectable()` decorator is used to define metadata object.
 
 Example
 
-`./injectable.ts`
+`./service.ts`
 
 ```ts
 import { Injectable } from 'express-mod'
@@ -392,11 +354,11 @@ export class ExampleService {
 
 ### @Inject
 
-The `@Inject()` decorator is used to mark parameter as dependency.
+The `@Inject()` decorator is used to mark parameter as dependency. but usually we don't need to use this we inject one time using `@Injectable()` at the Service level and we're good to go.
 
 Example
 
-`./inject.ts`
+`./api.ts`
 
 ```ts
 import { Inject } from 'express-mod'
@@ -453,7 +415,7 @@ Example
 ```ts
 import { Middleware, UnauthorizedError } from 'express-mod'
 
-// check if user is not log in.
+// check if user is logged in.
 const Authenticated = () =>
     Middleware([
         (req, res, next) => {
@@ -465,7 +427,7 @@ const Authenticated = () =>
 
 // example usage:
 export class ExampleApi {
-    @Authenticated()
+    @Authenticated() // TaaDaa!
     public helloWorld(): string {
         return 'hello world!'
     }
@@ -481,7 +443,7 @@ export class ExampleApi {
 
 Example
 
-`./api.method.ts`
+`./custom.method.ts`
 
 ```ts
 import { METHOD_DECORATOR_FACTORY, PathParams } from 'express-mod'
@@ -491,7 +453,7 @@ const Head = (url?: PathParams, status: number = 200) => METHOD_DECORATOR_FACTOR
 
 // example usage:
 export class ExampleApi {
-    @Head()
+    @Head() // TaaDaa!
     public helloWorld(): string {
         return 'hello world!'
     }
@@ -502,11 +464,11 @@ export class ExampleApi {
 
 ### Errors & Exceptions
 
-Customize `response` error.
+Customize error `response`
 
 Example
 
-`./errors.err.ts`
+`./custom.err.ts`
 
 ```ts
 import { CustomError } from 'express-mod'
@@ -522,7 +484,10 @@ export class BadRequestError extends CustomError {
 }
 
 // example usage:
-throw new BadRequestError('Any message.')
+if (!req.user) throw new BadRequestError('User is not logged in.')
+
+// response
+response: { status: 400, error: 'BAD_REQUEST', message: 'User is not logged in.' }
 ```
 
 <a href="#router"></a>
@@ -548,7 +513,7 @@ router.attach('/', [route, ...])
 
 ## Exception
 
-No description provided.
+Api error response message. Use inside the `Method-level` logic.
 
 -   @param `message` response message.
 
@@ -559,7 +524,11 @@ Possible errors
 Example
 
 ```ts
-throw new ConflictError('User is already exist.')
+import { ConflictError } from 'express-mid'
+
+if (user) throw new ConflictError('User is already exist')
+// response
+response: { status: 409, error: 'CONFLICT', message: 'User is already exist' }
 ```
 
 <a href="#define-injector"></a>
@@ -576,7 +545,8 @@ import { defineInjector } from 'express-mod'
 export class Example {}
 
 // define injector
-defineInjector(Example)
+const example = defineInjector(Example)
+console.log(example.name) // => 'Example'
 ```
 
 <a href="#using-with-js"></a>
@@ -598,15 +568,15 @@ defineInjector(Example)
 const { expressFn } = require('express-mod') // this would work! ✅
 // const express = require('express-mod') this will not work!❌
 
+// or
+
+import { expressFn } from 'express-mod'
+
 // initialize express
 const app = expressFn()
 
 // listen for connections
 app.listen(4000, () => console.log('Server is up! visit: http://localhost:4000'))
 ```
-
-#### Benefit
-
--   [Exception](#exception)
 
 **express-mod** build everything Api (Application programming interface) lighter, easier and maintainable.

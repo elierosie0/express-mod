@@ -1,10 +1,10 @@
 // @ts-nocheck - remove this comment!
 
 import { Api, Get } from '../../../index' // change import path to 'express-mod'
-import { type ExampleBaseImpl, ExampleBaseService } from './service'
+import { ExampleBaseService } from './service'
 
 @Api('/base')
-export class ExampleBaseApi implements ExampleBaseImpl {
+export class ExampleBaseApi {
     constructor(private readonly exampleBaseService: ExampleBaseService) {}
 
     @Get()
