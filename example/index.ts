@@ -18,7 +18,7 @@ router.attach('/api/v1', [ExampleBaseRoute, ExampleValidationRoute])
 
 async function __main__() {
     // listen for connections
-    server.listen(4000, '0.0.0.0', () => console.info(`⚡️ Server is up in ${process.env.NODE_ENV} mode. visit: http://localhost:${process.env.PORT}`))
+    server.listen(4000, '0.0.0.0', () => console.info(`⚡️ Server is up in ${process.env.NODE_ENV} mode. visit: http://localhost:4000`))
 }
 
 // execute main
